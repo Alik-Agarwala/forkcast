@@ -89,6 +89,7 @@
     "dev:dashboard": "vite --config dashboard/vite.config.ts",
     "demo:shop": "vite --config examples/demo-shop/vite.config.ts",
     "demo:simulate": "tsx scripts/simulate.ts",
+    "smoke": "node scripts/smoke.mjs",
     "prepublishOnly": "npm run typecheck && npm test && npm run build"
   },
   "peerDependencies": {
