@@ -59,6 +59,12 @@ export function variantColor(exp: Pick<Experiment, 'variants'>, key: string): st
   return `var(--series-${(i < 0 ? exp.variants.length : i) % 6 + 1})`;
 }
 
+/** Traffic used when switching on an experiment whose traffic is 0%: start small in production. */
+export function startTraffic(env: string, current?: number): number {
+  if (current && current > 0) return current;
+  return env === 'production' ? 5 : 100;
+}
+
 export function envColor(env: string): string {
   return ['development', 'staging', 'production'].includes(env) ? `var(--env-${env})` : 'var(--muted)';
 }

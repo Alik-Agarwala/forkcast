@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { api, type ExperimentSummary } from '../api';
 import { navigate, useEnv } from '../App';
 import { Bars, Sparkline } from '../components/charts';
-import { fmt, Icon, StatusPill, Switch, TypeTag, useData, useToast, variantColor } from '../components/ui';
+import { fmt, Icon, startTraffic, StatusPill, Switch, TypeTag, useData, useToast, variantColor } from '../components/ui';
 
 type Filter = 'all' | 'running' | 'launched' | 'off' | 'archived';
 
@@ -105,8 +105,9 @@ export function ExperimentsPage() {
     const status = on ? 'running' : 'off';
     list.setData((all) => all?.map((e) => (e.key === exp.key ? { ...e, environments: { ...e.environments, [env]: { ...(current ?? { traffic: 0 }), status } } } : e)));
     try {
-      await api.setEnv(exp.key, env, { status, traffic: on && !current?.traffic ? 100 : current?.traffic });
-      toast(`${exp.key} is now ${on ? 'running' : 'off'} in ${envName}`);
+      const traffic = on ? startTraffic(env, current?.traffic) : current?.traffic;
+      await api.setEnv(exp.key, env, { status, traffic });
+      toast(on ? `${exp.key} is running in ${envName} for ${traffic}% of users` : `${exp.key} is off in ${envName}`);
     } catch (err) {
       toast((err as Error).message, true);
     }

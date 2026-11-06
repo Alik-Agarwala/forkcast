@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api, type EnvironmentStatus, type Experiment } from '../api';
 import { navigate, useEnv } from '../App';
-import { CopyButton, envColor, fmt, Icon, Modal, StatusPill, TypeTag, useData, useToast, variantColor } from '../components/ui';
+import { CopyButton, envColor, fmt, Icon, Modal, startTraffic, StatusPill, TypeTag, useData, useToast, variantColor } from '../components/ui';
 import { IntegrateTab } from './Integrate';
 import { ResultsTab } from './Results';
 import { SetupTab, TargetingTab } from './Setup';
@@ -49,7 +49,10 @@ function RolloutControl({ exp, onChange }: { exp: Experiment; onChange: (e: Expe
               aria-checked={status === 'running'}
               className={status === 'running' ? 'on' : ''}
               disabled={busy || exp.archived}
-              onClick={() => patch({ status: 'running', traffic: traffic || 100 }, `Running in ${envName} for ${traffic || 100}% of users`)}
+              onClick={() => {
+                const t = startTraffic(env, traffic);
+                void patch({ status: 'running', traffic: t }, `Running in ${envName} for ${t}% of users`);
+              }}
             >
               <span className="env-dot" style={{ background: 'var(--good)' }} /> Running
             </button>
