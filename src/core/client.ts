@@ -144,6 +144,7 @@ export class ForkcastClient {
   private storage?: Storage;
   private closed = false;
   private configVersion?: string;
+  private inflight: Promise<void> = Promise.resolve();
 
   constructor(options: ForkcastOptions = {}) {
     this.opts = options;
@@ -318,8 +319,13 @@ export class ForkcastClient {
     this.applyRemote(body);
   }
 
-  /** Send queued events now. */
-  async flush(): Promise<void> {
+  /** Send queued events now. Resolves once everything queued so far (including in-flight batches) was sent. */
+  flush(): Promise<void> {
+    this.inflight = this.inflight.then(() => this.sendQueued());
+    return this.inflight;
+  }
+
+  private async sendQueued(): Promise<void> {
     if (!this.isRemote || this.queue.length === 0) return;
     const events = this.queue.splice(0, this.queue.length);
     try {

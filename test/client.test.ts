@@ -146,3 +146,27 @@ describe('remote mode', () => {
     await fc.close();
   });
 });
+
+describe('flush ordering', () => {
+  it('close() waits for batches already being sent in the background', async () => {
+    const received: unknown[] = [];
+    const fetchImpl = (async (url: string, init?: RequestInit) => {
+      if (url.endsWith('/config')) {
+        return new Response(JSON.stringify({ environment: 'development', version: 'v', experiments }), { status: 200 });
+      }
+      await new Promise((r) => setTimeout(r, 30)); // slow network
+      received.push(...JSON.parse(String(init!.body)).events);
+      return new Response('{}', { status: 202 });
+    }) as unknown as typeof fetch;
+    const fc = createForkcast({ apiUrl: 'http://x.test', clientKey: 'k', fetch: fetchImpl, realtime: false, refreshInterval: 0, flushInterval: 0, persist: false });
+    await fc.ready();
+    // 60 exposures + 60 tracks: crossing 100 queued events triggers a background flush.
+    for (let i = 0; i < 60; i++) {
+      const u = fc.forUser({ id: `u${i}` });
+      u.getTreatment('new-checkout');
+      u.track('purchase');
+    }
+    await fc.close();
+    expect(received).toHaveLength(120);
+  });
+});
