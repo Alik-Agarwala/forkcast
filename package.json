@@ -5,13 +5,13 @@
   "type": "module",
   "license": "MIT",
   "author": "Alik Agarwala",
-  "homepage": "https://github.com/alikagarwala/forkcast#readme",
+  "homepage": "https://github.com/Alik-Agarwala/forkcast#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/alikagarwala/forkcast.git"
+    "url": "git+https://github.com/Alik-Agarwala/forkcast.git"
   },
   "bugs": {
-    "url": "https://github.com/alikagarwala/forkcast/issues"
+    "url": "https://github.com/Alik-Agarwala/forkcast/issues"
   },
   "keywords": [
     "ab-testing",

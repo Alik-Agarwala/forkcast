@@ -257,7 +257,7 @@ Forkcast is plain ESM + CommonJS with zero runtime dependencies, so it works any
 The repository includes a demo coffee shop, seeded experiments and a traffic simulator.
 
 ```bash
-git clone https://github.com/alikagarwala/forkcast.git
+git clone https://github.com/Alik-Agarwala/forkcast.git
 cd forkcast
 npm install
 npm run build              # builds the library + dashboard

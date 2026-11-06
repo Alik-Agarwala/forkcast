@@ -7,7 +7,7 @@ Thanks for helping! This guide gets you from clone to pull request.
 Requirements: **Node.js 22+** for development (Vite, Vitest and tsup need it) and npm. The published package itself runs on Node 18+, which CI checks with `scripts/smoke.mjs`.
 
 ```bash
-git clone https://github.com/alikagarwala/forkcast.git
+git clone https://github.com/Alik-Agarwala/forkcast.git
 cd forkcast
 npm install
 npm test
