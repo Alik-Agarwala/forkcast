@@ -1,0 +1,117 @@
+{
+  "name": "forkcast",
+  "version": "0.1.0",
+  "description": "Self-hosted A/B testing & feature flags for JavaScript. Control vs treatments (C/T1/T2), sticky bucketing, targeting, one-click kill switch, dev overrides and a real-time dashboard.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Alik Agarwala",
+  "homepage": "https://github.com/alikagarwala/forkcast#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alikagarwala/forkcast.git"
+  },
+  "bugs": {
+    "url": "https://github.com/alikagarwala/forkcast/issues"
+  },
+  "keywords": [
+    "ab-testing",
+    "a/b testing",
+    "experiments",
+    "feature-flags",
+    "feature-toggles",
+    "split-testing",
+    "weblab",
+    "rollout",
+    "kill-switch",
+    "react"
+  ],
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./react": {
+      "import": {
+        "types": "./dist/react.d.ts",
+        "default": "./dist/react.js"
+      },
+      "require": {
+        "types": "./dist/react.d.cts",
+        "default": "./dist/react.cjs"
+      }
+    },
+    "./devtools": {
+      "import": {
+        "types": "./dist/devtools.d.ts",
+        "default": "./dist/devtools.js"
+      },
+      "require": {
+        "types": "./dist/devtools.d.cts",
+        "default": "./dist/devtools.cjs"
+      }
+    },
+    "./server": {
+      "types": "./dist/server.d.ts",
+      "import": "./dist/server.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "forkcast": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">=18.17"
+  },
+  "scripts": {
+    "build": "rm -rf dist && tsup && vite build --config dashboard/vite.config.ts",
+    "build:lib": "tsup",
+    "build:dashboard": "vite build --config dashboard/vite.config.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "dev:server": "tsx src/cli/index.ts start --data .forkcast/dev.json --seed examples/forkcast.demo.json",
+    "dev:dashboard": "vite --config dashboard/vite.config.ts",
+    "demo:shop": "vite --config examples/demo-shop/vite.config.ts",
+    "demo:simulate": "tsx scripts/simulate.ts",
+    "prepublishOnly": "npm run typecheck && npm test && npm run build"
+  },
+  "peerDependencies": {
+    "react": ">=17"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@testing-library/react": "^16.3.3",
+    "@types/node": "^22.20.5",
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "@vitejs/plugin-react": "^6.2.1",
+    "jsdom": "^29.1.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tsup": "^9.0.0",
+    "tsx": "^4.23.15",
+    "typescript": "5.9",
+    "vite": "^8.3.6",
+    "vitest": "^5.1.0"
+  }
+}
