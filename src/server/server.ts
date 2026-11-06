@@ -527,7 +527,8 @@ export async function createForkcastServer(options: ForkcastServerOptions = {}):
       });
       const address = httpServer.address();
       const actual = typeof address === 'object' && address ? address.port : port;
-      return { port: actual, url: `http://localhost:${actual}`, server: httpServer };
+      const shown = host === '0.0.0.0' || host === '::' ? 'localhost' : host.includes(':') ? `[${host}]` : host;
+      return { port: actual, url: `http://${shown}:${actual}`, server: httpServer };
     },
     async close() {
       clearInterval(heartbeat);
