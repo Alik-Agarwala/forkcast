@@ -7,6 +7,12 @@ Ship code dark, flip it on with one click, roll out by percentage, target by cou
 
 `npm install forkcast`
 
+[![npm version](https://img.shields.io/npm/v/forkcast.svg)](https://www.npmjs.com/package/forkcast)
+[![CI](https://github.com/Alik-Agarwala/forkcast/actions/workflows/ci.yml/badge.svg)](https://github.com/Alik-Agarwala/forkcast/actions/workflows/ci.yml)
+[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+🎬 [Watch the 2-minute launch video](https://github.com/Alik-Agarwala/forkcast/releases/tag/v0.1.0)
+
 </div>
 
 ---
