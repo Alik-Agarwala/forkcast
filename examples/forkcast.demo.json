@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "environments": [
+    { "key": "development", "name": "Development", "clientKey": "fc_dev_demo_key", "color": "#16a34a" },
+    { "key": "staging", "name": "Staging", "clientKey": "fc_stag_demo_key", "color": "#d97706" },
+    { "key": "production", "name": "Production", "clientKey": "fc_prod_demo_key", "color": "#dc2626" }
+  ],
+  "experiments": [
+    {
+      "key": "new-checkout",
+      "name": "New checkout flow",
+      "description": "C keeps the classic cart page. T1 adds a one-click Buy now button. T2 adds a sticky checkout bar.",
+      "hypothesis": "Removing steps between product and payment increases purchases.",
+      "type": "experiment",
+      "owner": "alik",
+      "tags": ["checkout", "revenue"],
+      "variants": [
+        { "key": "C", "name": "Cart page", "weight": 34 },
+        { "key": "T1", "name": "One-click buy", "weight": 33 },
+        { "key": "T2", "name": "Sticky checkout bar", "weight": 33 }
+      ],
+      "metrics": ["purchase", "add_to_cart"],
+      "audience": {
+        "match": "all",
+        "conditions": [{ "attribute": "country", "operator": "in", "value": ["US", "IN", "GB", "DE", "CA"] }]
+      },
+      "environments": {
+        "development": { "status": "running", "traffic": 100 },
+        "staging": { "status": "running", "traffic": 100 },
+        "production": { "status": "running", "traffic": 50 }
+      }
+    },
+    {
+      "key": "hero-headline",
+      "name": "Hero headline copy",
+      "description": "Headline text is delivered as a JSON payload, so copy changes need no deploy.",
+      "type": "experiment",
+      "owner": "alik",
+      "tags": ["copy"],
+      "variants": [
+        { "key": "C", "name": "Fresh coffee", "weight": 50, "payload": { "headline": "Fresh coffee, delivered weekly", "cta": "Shop beans" } },
+        { "key": "T1", "name": "Morning upgrade", "weight": 50, "payload": { "headline": "Your morning, upgraded", "cta": "Find your roast" } }
+      ],
+      "metrics": ["add_to_cart"],
+      "environments": {
+        "development": { "status": "running", "traffic": 100 },
+        "staging": { "status": "off", "traffic": 100 },
+        "production": { "status": "running", "traffic": 100 }
+      }
+    },
+    {
+      "key": "dark-mode",
+      "name": "Dark mode",
+      "description": "Gradual rollout of the dark theme.",
+      "type": "flag",
+      "owner": "alik",
+      "variants": [
+        { "key": "C", "name": "Off", "weight": 0 },
+        { "key": "T1", "name": "On", "weight": 100 }
+      ],
+      "environments": {
+        "development": { "status": "running", "traffic": 100 },
+        "staging": { "status": "running", "traffic": 100 },
+        "production": { "status": "running", "traffic": 20 }
+      }
+    },
+    {
+      "key": "free-shipping-banner",
+      "name": "Free shipping banner",
+      "description": "Won its test last quarter and is launched to everyone.",
+      "type": "flag",
+      "owner": "alik",
+      "variants": [
+        { "key": "C", "name": "Off", "weight": 0 },
+        { "key": "T1", "name": "On", "weight": 100 }
+      ],
+      "environments": {
+        "development": { "status": "launched", "traffic": 100, "launchedVariant": "T1" },
+        "staging": { "status": "launched", "traffic": 100, "launchedVariant": "T1" },
+        "production": { "status": "launched", "traffic": 100, "launchedVariant": "T1" }
+      }
+    },
+    {
+      "key": "holiday-theme",
+      "name": "Holiday theme",
+      "description": "Seasonal styling, shipped dark and waiting for December.",
+      "type": "flag",
+      "owner": "alik",
+      "tags": ["seasonal"],
+      "variants": [
+        { "key": "C", "name": "Off", "weight": 0 },
+        { "key": "T1", "name": "On", "weight": 100 }
+      ],
+      "environments": {
+        "development": { "status": "off", "traffic": 100 },
+        "staging": { "status": "off", "traffic": 100 },
+        "production": { "status": "off", "traffic": 0 }
+      }
+    }
+  ]
+}
