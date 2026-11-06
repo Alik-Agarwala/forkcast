@@ -3,7 +3,11 @@
     "target": "ES2020",
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "jsx": "react-jsx",
     "strict": true,
     "noUncheckedIndexedAccess": false,
@@ -13,8 +17,32 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "allowImportingTsExtensions": false,
-    "types": ["node"],
-    "noEmit": true
+    "types": [
+      "node",
+      "vite/client"
+    ],
+    "noEmit": true,
+    "paths": {
+      "forkcast": [
+        "./src/core/index.ts"
+      ],
+      "forkcast/react": [
+        "./src/react/index.tsx"
+      ],
+      "forkcast/devtools": [
+        "./src/devtools/index.ts"
+      ],
+      "forkcast/server": [
+        "./src/server/index.ts"
+      ]
+    }
   },
-  "include": ["src", "test", "dashboard/src", "examples", "scripts", "*.config.ts"]
+  "include": [
+    "src",
+    "test",
+    "dashboard/src",
+    "examples",
+    "scripts",
+    "*.config.ts"
+  ]
 }
