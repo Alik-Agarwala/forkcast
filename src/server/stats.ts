@@ -146,7 +146,7 @@ export interface MetricResult {
 }
 
 export interface Verdict {
-  status: 'not_started' | 'collecting' | 'no_difference' | 'winner' | 'loser' | 'srm';
+  status: 'not_started' | 'rollout' | 'collecting' | 'no_difference' | 'winner' | 'loser' | 'srm';
   variant?: string;
   metric?: string;
   lift?: number;
@@ -336,6 +336,9 @@ function pct(n: number): string {
 
 function verdictFor(variants: VariantSummary[], metrics: MetricResult[], srmOk: boolean, total: number): Verdict {
   if (total === 0) return { status: 'not_started', message: 'No users have been exposed yet.' };
+  if (!variants.some((v) => v.key === 'C' && v.expectedShare > 0)) {
+    return { status: 'rollout', message: 'Rollout without a control group: everyone in the traffic gets the feature. Give C a weight to measure impact.' };
+  }
   if (!srmOk) {
     return {
       status: 'srm',

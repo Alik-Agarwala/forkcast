@@ -86,3 +86,11 @@ describe('computeResults', () => {
     expect(r.timeseries[2].cumulative).toEqual({ C: 6, T1: 4 });
   });
 });
+
+describe('rollout flags', () => {
+  it('reports a rollout instead of a comparison when C has no weight', () => {
+    const flag: Experiment = { ...exp, type: 'flag', variants: [{ key: 'C', weight: 0 }, { key: 'T1', weight: 100 }] };
+    const r = computeResults(flag, 'production', users('T1', 500, 50), {});
+    expect(r.verdict.status).toBe('rollout');
+  });
+});
