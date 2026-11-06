@@ -211,7 +211,7 @@ export function ResultsTab({ exp, env }: { exp: Experiment; env: string }) {
         <div>
           <h3>Sample ratio check</h3>
           <p className="small text-2">
-            χ² = {r.srm.chiSquare.toFixed(2)}, p = {fmt.p(r.srm.pValue)}.{' '}
+            χ² = {(r.srm.chiSquare ?? 0).toFixed(2)}, p = {fmt.p(r.srm.pValue)}.{' '}
             {r.srm.ok ? 'The observed split matches the configured weights.' : 'The split does not match the weights. Look for redirects, caching or bot traffic affecting one treatment.'}
           </p>
         </div>

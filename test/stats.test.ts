@@ -94,3 +94,13 @@ describe('rollout flags', () => {
     expect(r.verdict.status).toBe('rollout');
   });
 });
+
+describe('empty experiments', () => {
+  it('returns finite, JSON-safe numbers when nobody is enrolled yet', () => {
+    const r = computeResults(exp, 'production', [], {});
+    expect(r.verdict.status).toBe('not_started');
+    expect(Number.isFinite(r.srm.chiSquare)).toBe(true);
+    const json = JSON.stringify(r, (_k, v) => (typeof v === 'number' && !Number.isFinite(v) ? 'NOT_FINITE' : v));
+    expect(json).not.toContain('NOT_FINITE');
+  });
+});

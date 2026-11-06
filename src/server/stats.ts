@@ -307,7 +307,7 @@ export function computeResults(
   let chi = 0;
   let df = -1;
   for (const v of variants) {
-    if (v.expectedShare <= 0) continue;
+    if (v.expectedShare <= 0 || totalUsers === 0) continue;
     const expected = v.expectedShare * totalUsers;
     chi += ((v.users - expected) ** 2) / expected;
     df++;
