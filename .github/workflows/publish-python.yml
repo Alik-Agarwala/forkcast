@@ -1,0 +1,52 @@
+name: Publish Python SDK
+
+# Publishes python/ to PyPI as `forkcast-sdk` using trusted publishing (no tokens).
+# Release: bump python/src/forkcast/_version.py, then `git tag python-v<version> && git push origin python-v<version>`.
+# One-time PyPI setup: see docs/publishing.md#publishing-the-python-sdk-to-pypi.
+
+on:
+  push:
+    tags: ['python-v*']
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Test and build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: python
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - run: pip install -e ".[dev]"
+      - name: Tag matches package version
+        if: github.ref_type == 'tag'
+        run: |
+          version="$(python -c 'import forkcast; print(forkcast.__version__)')"
+          test "${GITHUB_REF_NAME#python-v}" = "$version" || { echo "Tag $GITHUB_REF_NAME does not match version $version"; exit 1; }
+      - run: ruff check . && mypy
+      - run: pytest -ra
+      - run: python -m build && twine check --strict dist/*
+      - uses: actions/upload-artifact@v7
+        with:
+          name: python-dist
+          path: python/dist
+
+  publish:
+    name: Upload to PyPI
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/forkcast-sdk/
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: python-dist
+          path: dist
+      - uses: pypa/gh-action-pypi-publish@release/v1

@@ -2,12 +2,13 @@
 
 # Forkcast
 
-**Self-hosted A/B testing and feature flags for JavaScript.**
-Ship code dark, flip it on with one click, roll out by percentage, target by country or anything else, and see which treatment wins, all from one npm package.
+**Self-hosted A/B testing and feature flags for JavaScript and Python.**
+Ship code dark, flip it on with one click, roll out by percentage, target by country or anything else, and see which treatment wins. One npm package runs the whole platform, and the Python SDK brings the same flags to FastAPI, Flask and Django.
 
-`npm install forkcast`
+`npm install forkcast` · `pip install forkcast-sdk`
 
 [![npm version](https://img.shields.io/npm/v/forkcast.svg)](https://www.npmjs.com/package/forkcast)
+[![PyPI version](https://img.shields.io/pypi/v/forkcast-sdk.svg)](https://pypi.org/project/forkcast-sdk/)
 [![CI](https://github.com/Alik-Agarwala/forkcast/actions/workflows/ci.yml/badge.svg)](https://github.com/Alik-Agarwala/forkcast/actions/workflows/ci.yml)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
@@ -21,6 +22,10 @@ Forkcast is a feature-flag and experimentation tool in the spirit of the interna
 
 ```ts
 const treatment = forkcast.getTreatment('new-checkout'); // 'C' | 'T1' | 'T2'
+```
+
+```python
+treatment = forkcast.for_user(user).get_treatment("new-checkout")  # same answer, from Python
 ```
 
 ## Contents
@@ -60,7 +65,7 @@ const treatment = forkcast.getTreatment('new-checkout'); // 'C' | 'T1' | 'T2'
 | **Environments** | Development, staging and production, each with its own public client key |
 | **Analytics** | Exposures, conversions and revenue per treatment, lift ± 95% CI, p-values, SRM check, daily enrolment, country breakdown |
 | **Dashboard** | Clean, real-time UI with light and dark themes, audit log, targeting editor, code snippets |
-| **SDKs** | Vanilla JS/TS, React hooks + components, Node server-side evaluation (`forUser`) |
+| **SDKs** | Vanilla JS/TS, React hooks + components, Node server-side evaluation (`forUser`), Python with FastAPI and Flask integrations. Every SDK buckets identically |
 | **Self-hosting** | Standalone server or mount into Express; JSON-file storage out of the box; pluggable storage adapter interface |
 
 ## Quick start (5 minutes)
@@ -102,6 +107,23 @@ if (forkcast.getTreatment('new-checkout') === 'T1') {
 
 // Measure it
 forkcast.track('purchase', { value: 49.99 });
+```
+
+Python backend? Same experiment, same buckets:
+
+```bash
+pip install forkcast-sdk
+```
+
+```python
+from forkcast import Forkcast
+
+forkcast = Forkcast(api_url="http://localhost:4400", client_key="fc_deve_...")
+
+fc = forkcast.for_user({"id": current_user.id, "country": current_user.country})
+if fc.get_treatment("new-checkout") == "T1":
+    render_one_click_checkout()
+fc.track("purchase", value=49.99)
 ```
 
 ### 4. Watch the results
@@ -187,6 +209,24 @@ app.get('/checkout', (req, res) => {
 });
 ```
 
+### Python (FastAPI, Flask, Django)
+
+```python
+from fastapi import Depends, FastAPI, Request
+from forkcast import Forkcast, ScopedForkcast
+from forkcast.integrations.fastapi import forkcast_dependency, forkcast_lifespan
+
+forkcast = Forkcast(api_url=FORKCAST_URL, client_key=FORKCAST_CLIENT_KEY)
+get_forkcast = forkcast_dependency(forkcast, lambda request: {"id": request.headers.get("x-user-id")})
+app = FastAPI(lifespan=forkcast_lifespan(forkcast))
+
+@app.get("/checkout")
+def checkout(fc: ScopedForkcast = Depends(get_forkcast)):
+    return {"one_click": fc.get_treatment("new-checkout") == "T1"}
+```
+
+Flask has `FlaskForkcast(app, forkcast, get_user=...)` and a `current_forkcast` proxy (also available in Jinja templates). Django and everything else can call `forkcast.for_user(...)` per request. Evaluation is local, there are no dependencies, and a user gets the same treatment from Python as from the JS SDK. Full guide: [docs/python.md](docs/python.md).
+
 ### Without a server (config as code)
 
 ```ts
@@ -257,6 +297,7 @@ Forkcast is plain ESM + CommonJS with zero runtime dependencies, so it works any
 | Bun, Deno (`npm:forkcast`) | Same API |
 | Edge / Workers (Cloudflare, Vercel Edge) | Use `realtime: false` with polling, or local `config` mode |
 | React Native / Expo | Pass `user.id` explicitly (no `localStorage`); polling instead of SSE |
+| Python ≥ 3.10 (FastAPI, Flask, Django, Celery, scripts) | `pip install forkcast-sdk`. Same buckets as JS; polling or `realtime=True` |
 
 ## Try the full demo locally
 
@@ -291,6 +332,16 @@ Then try:
 5. Open **New checkout flow** in the dashboard to see the winner, lift and confidence intervals from the simulated traffic.
 6. Hit **Kill switch** and watch every shopper fall back to `C`.
 
+Python backends get the same demo. With `npm run dev:server` running:
+
+```bash
+pip install -e "python[fastapi,flask]" uvicorn
+uvicorn --app-dir examples/python-fastapi main:app --port 8000   # http://localhost:8000/?user=alice&country=IN
+flask --app examples/python-flask/app.py run --port 5000          # http://localhost:5000/?user=alice&country=IN
+```
+
+`alice` sees the same treatments in the shop, the FastAPI app and the Flask app.
+
 ## Testing
 
 ```bash
@@ -308,6 +359,16 @@ What the tests cover:
 - `test/stats.test.ts`: z-test, chi-square, SRM, verdicts, timeseries
 - `test/server.test.ts`: the real HTTP server end to end: auth, CRUD, toggles, audit, import/export, SDK round trip, SSE
 - `test/react.test.tsx`: hooks, components and the devtools panel in jsdom
+
+Python SDK (from the `python/` folder):
+
+```bash
+pip install -e ".[dev]"   # SDK + test tools
+pytest                    # unit, parity, FastAPI/Flask and end-to-end tests
+```
+
+- `python/tests/test_parity.py`: thousands of hashing, targeting and evaluation cases generated from the JS core (`npm run python:parity`), so Python and JavaScript always agree
+- `python/tests/test_e2e.py`: the real Node server, JS and Python SDKs side by side, kill switch propagation, events reaching results
 
 To check the package exactly as users receive it:
 
@@ -330,8 +391,11 @@ src/
   server/      HTTP API, SSE, storage adapters, statistics                     → forkcast/server
   cli/         `forkcast start | init | validate`                              → bin
 dashboard/     React + Vite SPA, compiled into dist/dashboard and served by the server
-examples/      demo-shop (React), node-server, forkcast.demo.json seed
-scripts/       simulate.ts traffic generator
+python/        Python SDK (PyPI: forkcast-sdk, import forkcast)                 → pip
+  src/forkcast/  client, hashing, targeting, evaluation, FastAPI + Flask integrations
+  tests/         pytest suites, JS parity fixture
+examples/      demo-shop (React), node-server, python-fastapi, python-flask, forkcast.demo.json seed
+scripts/       simulate.ts traffic generator, python-parity.ts fixture generator
 test/          vitest suites
 docs/          guides and references
 ```
@@ -348,7 +412,7 @@ Contributions are welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md). If you
 - Sequential testing / CUPED variance reduction
 - SSO and roles for the dashboard
 - Webhooks and Slack notifications on status changes
-- SDKs for other languages using the same hashing spec
+- SDKs for more languages (Go, Java, Ruby) using the same hashing spec
 
 ## Documentation index
 
@@ -356,12 +420,13 @@ Contributions are welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md). If you
 | --- | --- |
 | [docs/concepts.md](docs/concepts.md) | How bucketing, traffic, targeting and statistics work |
 | [docs/sdk.md](docs/sdk.md) | Full JavaScript, React, devtools and Node API |
+| [docs/python.md](docs/python.md) | Python SDK: FastAPI, Flask, Django, workers, production tips |
 | [docs/dev-and-production.md](docs/dev-and-production.md) | Local development, QA, deployment and rollout playbook |
 | [docs/server.md](docs/server.md) | Self-hosting, CLI flags, REST API, storage adapters, security |
 | [docs/dashboard.md](docs/dashboard.md) | Tour of every dashboard screen |
 | [docs/architecture.md](docs/architecture.md) | How the pieces fit together, data model, design decisions |
 | [docs/testing.md](docs/testing.md) | Running and writing tests |
-| [docs/publishing.md](docs/publishing.md) | Releasing new versions to npm |
+| [docs/publishing.md](docs/publishing.md) | Releasing new versions to npm and PyPI |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Workflow, conventions, pull requests |
 | [AGENTS.md](AGENTS.md) | Instructions for AI coding agents working in this repo |
 

@@ -1,0 +1,97 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[project]
+name = "forkcast-sdk"
+dynamic = ["version"]
+description = "Python SDK for Forkcast: self-hosted A/B testing & feature flags. Sticky bucketing identical to the JS SDK, targeting, kill switch, FastAPI and Flask integrations."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.10"
+authors = [{ name = "Prantika Ghosh" }]
+maintainers = [{ name = "Alik Agarwala" }]
+keywords = [
+  "ab-testing",
+  "a/b testing",
+  "experiments",
+  "feature-flags",
+  "feature-toggles",
+  "split-testing",
+  "rollout",
+  "kill-switch",
+  "fastapi",
+  "flask",
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Framework :: FastAPI",
+  "Framework :: Flask",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Software Development :: Libraries",
+  "Typing :: Typed",
+]
+dependencies = []
+
+[project.optional-dependencies]
+fastapi = ["fastapi>=0.100"]
+flask = ["flask>=2.2"]
+dev = [
+  "pytest>=7",
+  "fastapi>=0.100",
+  "httpx>=0.24",
+  "flask>=2.2",
+  "ruff>=0.5",
+  "mypy>=1.8",
+  "build>=1",
+  "twine>=5",
+]
+
+[project.urls]
+Homepage = "https://github.com/Alik-Agarwala/forkcast"
+Documentation = "https://github.com/Alik-Agarwala/forkcast/blob/main/docs/python.md"
+Repository = "https://github.com/Alik-Agarwala/forkcast"
+Issues = "https://github.com/Alik-Agarwala/forkcast/issues"
+Changelog = "https://github.com/Alik-Agarwala/forkcast/blob/main/CHANGELOG.md"
+
+[tool.hatch.version]
+path = "src/forkcast/_version.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/forkcast"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/forkcast", "tests", "README.md", "LICENSE", "pyproject.toml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+filterwarnings = ["ignore:Using `httpx` with `starlette.testclient`"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "BLE"]
+ignore = ["UP006", "UP007", "UP035", "UP045"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["B008"]
+"../examples/*" = ["B008"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+packages = ["forkcast"]
+mypy_path = "src"

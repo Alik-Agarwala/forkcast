@@ -4,8 +4,8 @@
 
 ```
  ┌───────────────────────── your apps ─────────────────────────┐
- │  Browser / React           Node / SSR            Edge / RN   │
- │  createForkcast()          forUser() per request             │
+ │  Browser / React     Node / SSR      Python      Edge / RN   │
+ │  createForkcast()    forUser()       for_user() per request  │
  │     │  evaluate() locally: pure hashing, no network per call │
  └─────┼─────────────────────────────────────────────────────────┘
        │ GET /api/sdk/config     (on start)
@@ -37,6 +37,8 @@
 **Intention-to-treat analysis.** A user's first exposure fixes their analysis group. Conversions count only after that first exposure.
 
 **Realtime via SSE.** Server-Sent Events are plain HTTP, pass through most proxies, reconnect automatically and need no library. Clients without `EventSource` poll.
+
+**One evaluator, several languages.** The server never evaluates; each SDK does. `python/` is a port of `src/core` (hashing, targeting with JavaScript's value coercions, evaluation precedence) so Python services and JS clients agree on every user. Parity is enforced by a fixture generated from the JS code (`scripts/python-parity.ts`) and replayed by the Python tests. The Python client talks to the same three SDK endpoints, so the server needs no changes per language.
 
 **Zero runtime dependencies.** The SDK, server and CLI use only platform APIs (`fetch`, `node:http`, `node:crypto`). The dashboard is pre-built and shipped as static files.
 
@@ -81,6 +83,11 @@ Results are computed on read from `assignments` and `daily` (`computeResults` in
 | `src/server/server.ts` | HTTP routing, auth, SSE, seeding, static files |
 | `src/cli/index.ts` | `forkcast` binary |
 | `dashboard/src` | React SPA (pages, charts, API client) |
+| `python/src/forkcast/hashing.py`, `targeting.py`, `evaluate.py` | Python port of the evaluator (**must match `src/core`**) |
+| `python/src/forkcast/_js.py` | JavaScript `String()` / `Number()` semantics used by targeting |
+| `python/src/forkcast/client.py` | `Forkcast` / `ScopedForkcast`: config sync thread, SSE, event queue, fork safety |
+| `python/src/forkcast/integrations/` | FastAPI dependency + lifespan, Flask extension |
+| `scripts/python-parity.ts` | Generates the JS → Python parity fixture |
 
 ## Build output
 
@@ -94,3 +101,5 @@ dist/server.{js,d.ts}         forkcast/server (ESM, Node)
 dist/cli.js                   bin
 dist/dashboard/               static SPA served by the server
 ```
+
+`python -m build` (in `python/`) produces the PyPI wheel and sdist for `forkcast-sdk` in `python/dist/`.

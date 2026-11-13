@@ -11,6 +11,8 @@ npm install forkcast
 | `forkcast/devtools` | `mountDevtools` floating panel |
 | `forkcast/server` | Self-hosted server, storage adapters, statistics (Node only, see [server.md](server.md)) |
 
+Using Python? See [python.md](python.md) for the Python SDK (`pip install forkcast-sdk`). It uses the same server, the same experiments and the same buckets.
+
 All entry points ship ESM, CommonJS and TypeScript declarations. There are no runtime dependencies; React is an optional peer dependency used only by `forkcast/react`.
 
 ## `createForkcast(options)`

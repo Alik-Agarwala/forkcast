@@ -4,6 +4,15 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+### Added
+
+- **Python SDK** (`pip install forkcast-sdk`, `import forkcast`) for Python 3.10+, with no runtime dependencies. Local evaluation with bucketing, targeting and precedence identical to the JS SDK; background config polling or realtime SSE; batched exposures and `track()` events with retries; dev-only overrides; local config-as-code mode; fork-safe for gunicorn/uvicorn workers.
+- Python framework integrations: `forkcast.integrations.fastapi` (`forkcast_dependency`, `forkcast_lifespan`) and `forkcast.integrations.flask` (`FlaskForkcast`, `current_forkcast`, a `forkcast` Jinja variable). `?forkcast=key:T1` overrides work when `dev_mode=True`.
+- `npm run python:parity`: generates a JS → Python parity fixture so both SDKs are tested against each other.
+- Examples: `examples/python-fastapi`, `examples/python-flask`.
+- CI: Python 3.10–3.14 test matrix, end-to-end tests against the real server, and a PyPI trusted-publishing workflow (`publish-python.yml`).
+- Docs: [docs/python.md](docs/python.md), plus Python sections in the README, testing, architecture and publishing guides.
+
 ## [0.1.0] - 2026-11-06
 
 ### Added
