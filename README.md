@@ -297,7 +297,7 @@ Forkcast is plain ESM + CommonJS with zero runtime dependencies, so it works any
 | Bun, Deno (`npm:forkcast`) | Same API |
 | Edge / Workers (Cloudflare, Vercel Edge) | Use `realtime: false` with polling, or local `config` mode |
 | React Native / Expo | Pass `user.id` explicitly (no `localStorage`); polling instead of SSE |
-| Python ≥ 3.9 (FastAPI, Flask, Django, Celery, scripts) | `pip install forkcast-sdk`. Same buckets as JS; polling or `realtime=True` |
+| Python ≥ 3.10 (FastAPI, Flask, Django, Celery, scripts) | `pip install forkcast-sdk`. Same buckets as JS; polling or `realtime=True` |
 
 ## Try the full demo locally
 

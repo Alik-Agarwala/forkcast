@@ -52,7 +52,7 @@ Run `npm run typecheck && npm test` after every change, and the Python commands 
 8. **Config format is backwards compatible.** New fields optional.
 9. **Public API**: everything exported from `src/*/index.ts` is public. Removing or renaming an export is a breaking change.
 10. **SDK parity.** `python/src/forkcast/{hashing,targeting,evaluate,_js}.py` must give the same results as `src/core`. Change both SDKs together, regenerate `python/tests/fixtures/parity.json` with `npm run python:parity`, and never hand-edit the fixture or regenerate it to silence a failure caused by changing only one side.
-11. **Python package has no runtime dependencies** and supports Python 3.9+. Framework imports stay inside `forkcast/integrations/*`. Everything exported from `python/src/forkcast/__init__.py` is public.
+11. **Python package has no runtime dependencies** and supports Python 3.10+. Framework imports stay inside `forkcast/integrations/*`. Everything exported from `python/src/forkcast/__init__.py` is public.
 
 ## Conventions
 
@@ -61,7 +61,7 @@ Run `npm run typecheck && npm test` after every change, and the Python commands 
 - Server tests use a real server on port 0 with `dashboard: false`.
 - Dashboard: tokens in `dashboard/src/styles.css` (light + dark), treatment colours via `variantColor()`, inline SVG charts in `dashboard/src/components/charts.tsx` (legend/direct labels, hover tooltip, aria-label required).
 - Dashboard imports shared types from `../../src/...` with `import type` only.
-- Python: snake_case, full type hints (mypy strict), Python 3.9 syntax with `from __future__ import annotations`, ruff format at 120 columns. Tests in `python/tests/test_<area>.py`; HTTP behaviour is tested against the in-process `FakeServer` in `conftest.py`.
+- Python: snake_case, full type hints (mypy strict), Python 3.10+ (keep `from __future__ import annotations` and `typing` generics for consistency), ruff format at 120 columns. Tests in `python/tests/test_<area>.py`; HTTP behaviour is tested against the in-process `FakeServer` in `conftest.py`.
 - Conventional Commits (`feat(core): …`, `fix(server): …`, `feat(python): …`). One logical change per commit.
 
 ## Where to make common changes

@@ -30,7 +30,7 @@ Delete `.forkcast/` to start from a clean demo.
 
 ### Python SDK
 
-The Python SDK lives in `python/` and needs **Python 3.9+**. Work in a virtual environment so its tools stay out of your system Python:
+The Python SDK lives in `python/` and needs **Python 3.10+**. Work in a virtual environment so its tools stay out of your system Python:
 
 ```bash
 cd python
@@ -76,7 +76,7 @@ See [docs/architecture.md](docs/architecture.md#source-map) for the full source 
 - Small pure functions where possible (`evaluate`, `computeResults`).
 - Prettier-compatible formatting: 2 spaces, single quotes, trailing commas, ~140 columns.
 - Comments explain *why*, not *what*.
-- Python: type hints everywhere (`mypy --strict` passes), snake_case API, stdlib only, Python 3.9 syntax, `ruff format` (120 columns).
+- Python: type hints everywhere (`mypy --strict` passes), snake_case API, stdlib only, Python 3.10+, `ruff format` (120 columns).
 - Dashboard: CSS custom properties in `dashboard/src/styles.css`, no CSS frameworks. Colours for treatments come from `variantColor()` (fixed by position, never by rank). Every chart needs a legend or direct labels, a hover tooltip and an `aria-label`.
 
 ## Commits and pull requests

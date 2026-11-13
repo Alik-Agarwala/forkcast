@@ -652,7 +652,7 @@ class Forkcast:
                         data.append(value)
                     elif field == "retry" and value.isdigit():
                         retry = int(value) / 1000
-            except (socket.timeout, TimeoutError):
+            except TimeoutError:
                 pass  # Idle stream: reconnect (the server re-sends the config on connect).
             except Exception as err:  # noqa: BLE001
                 if not self._stop.is_set():

@@ -8,7 +8,7 @@ pip install "forkcast-sdk[fastapi]"     # + FastAPI helpers
 pip install "forkcast-sdk[flask]"       # + Flask helpers
 ```
 
-The package is called `forkcast-sdk` on PyPI and is imported as `forkcast`. It needs Python 3.9 or newer.
+The package is called `forkcast-sdk` on PyPI and is imported as `forkcast`. It needs Python 3.10 or newer.
 
 - [How it works](#how-it-works)
 - [Quick start](#quick-start)

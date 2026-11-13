@@ -55,7 +55,7 @@ def test_evaluate_matches_js(exp: dict) -> None:
 
 def test_overrides_match_js() -> None:
     user = FIXTURE["users"][5]
-    for exp, (key, variant, reason) in zip(FIXTURE["experiments"], FIXTURE["overrides"]):
+    for exp, (key, variant, reason) in zip(FIXTURE["experiments"], FIXTURE["overrides"], strict=True):
         ev = evaluate(exp, key, user, "production", {key: "T1"})
         assert (ev.variant, ev.reason) == (variant, reason), key
 

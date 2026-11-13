@@ -10,7 +10,7 @@ The Python SDK for [Forkcast](https://github.com/Alik-Agarwala/forkcast), the se
 - Local evaluation. Config is fetched once and kept fresh in the background, so every `get_treatment()` is pure hashing with no network call.
 - Works offline. If the server is unreachable, everything falls back to `C` (control) and your app never crashes.
 - No dependencies. Only the Python standard library. FastAPI and Flask helpers are optional.
-- Typed (`py.typed`). Python 3.9+.
+- Typed (`py.typed`). Python 3.10+.
 
 ```bash
 pip install forkcast-sdk
