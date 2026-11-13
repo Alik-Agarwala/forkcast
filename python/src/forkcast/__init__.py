@@ -1,6 +1,7 @@
 """Forkcast: self-hosted A/B testing and feature flags (Python SDK)."""
 
 from ._version import __version__
+from .evaluate import evaluate, pick_variant
 from .hashing import BUCKETS, bucket_of, murmur3
 from .targeting import OPERATORS, compare_semver, get_attribute, match_audience, match_condition
 from .types import CONTROL, Evaluation
@@ -13,8 +14,10 @@ __all__ = [
     "__version__",
     "bucket_of",
     "compare_semver",
+    "evaluate",
     "get_attribute",
     "match_audience",
     "match_condition",
     "murmur3",
+    "pick_variant",
 ]
