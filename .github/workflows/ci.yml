@@ -44,3 +44,37 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - run: node scripts/smoke.mjs
+
+  python:
+    name: Python SDK (Python ${{ matrix.python }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.9', '3.10', '3.11', '3.12', '3.13']
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # The parity fixture must match what the JS core produces today.
+      - run: npm run python:parity -- --check
+      # Built JS package for the end-to-end tests against the real server.
+      - run: npm run build:lib
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+          cache-dependency-path: python/pyproject.toml
+      - run: pip install -e ".[dev]"
+        working-directory: python
+      - run: ruff check . && ruff format --check . && mypy
+        if: matrix.python == '3.13'
+        working-directory: python
+      - run: pytest -ra
+        working-directory: python
+      - run: python -m build && twine check --strict dist/*
+        if: matrix.python == '3.13'
+        working-directory: python
