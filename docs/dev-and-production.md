@@ -43,6 +43,18 @@ VITE_FORKCAST_KEY=fc_prod_xxxxxxxx
 
 Next.js: use `NEXT_PUBLIC_FORKCAST_URL` / `NEXT_PUBLIC_FORKCAST_KEY`. Create React App: `REACT_APP_…`. Node: plain `process.env`.
 
+Python backends follow the same pattern. Pick the key from the environment and enable overrides only in development:
+
+```python
+forkcast = Forkcast(
+    api_url=os.environ["FORKCAST_URL"],
+    client_key=os.environ["FORKCAST_CLIENT_KEY"],   # dev key locally, prod key in production
+    dev_mode=os.environ.get("APP_ENV") == "development",
+)
+```
+
+See [python.md](python.md) for FastAPI, Flask and Django.
+
 Client keys are public: they can only read config and send events for their environment. Never put the **admin token** in frontend code.
 
 ## 3. Build the feature behind a treatment

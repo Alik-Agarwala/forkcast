@@ -67,13 +67,13 @@ variantBucket = murmur3("<salt>:variant:<userId>") % 10000
 
 Because the two hashes are **independent**:
 
-- the same user always gets the same treatment, on every device and server that sees the same user id
+- the same user always gets the same treatment, on every device and server that sees the same user id, and from every SDK (JavaScript and Python implement the identical algorithm)
 - raising traffic only *adds* users; nobody already in the experiment changes treatment
 - different experiments are uncorrelated (different salts)
 
 Changing the salt re-randomises everyone. Only do it to restart an experiment from scratch.
 
-> **Invariant:** the hashing algorithm and bucket count must never change. A change would silently reassign every user in every live experiment. `test/hash.test.ts` pins known outputs to prevent accidents.
+> **Invariant:** the hashing algorithm and bucket count must never change. A change would silently reassign every user in every live experiment. `test/hash.test.ts` pins known outputs to prevent accidents, and `python/tests/test_parity.py` checks that the Python SDK (`python/src/forkcast/hashing.py`) produces exactly the same buckets.
 
 ## User identity
 
