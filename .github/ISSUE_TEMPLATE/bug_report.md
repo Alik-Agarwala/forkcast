@@ -5,7 +5,7 @@ labels: bug
 ---
 
 **Forkcast version:**
-**Runtime:** (browser + version / Node version / framework)
+**Runtime:** (browser + version / Node version / Python version / framework)
 
 **What happened**
 
@@ -16,7 +16,7 @@ labels: bug
 ```json
 ```
 
-**Output of `forkcast.getVariant('<key>')`** (the `reason` field usually explains the decision)
+**Output of `forkcast.getVariant('<key>')`** (Python: `forkcast.get_variant("<key>", user).to_dict()`; the `reason` field usually explains the decision)
 
 ```json
 ```
