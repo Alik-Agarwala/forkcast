@@ -4,6 +4,12 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-11-13
+
+### Changed
+
+- README: Python SDK (`pip install forkcast-sdk`) quick start, FastAPI/Flask usage, runtime table and docs links, so the npm page shows it. No code changes.
+
 ## [python-v0.1.0] - 2026-11-13
 
 First release of the Python SDK, published to PyPI as [`forkcast-sdk`](https://pypi.org/project/forkcast-sdk/). The npm package is unchanged.

@@ -5,7 +5,7 @@ import { validateConfig } from '../core/validate';
 import type { ForkcastConfig } from '../core/types';
 import { createForkcastServer } from '../server/server';
 
-const VERSION = '0.1.0';
+const VERSION = '0.1.1';
 
 const HELP = `
 forkcast ${VERSION} — self-hosted A/B testing & feature flags

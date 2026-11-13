@@ -1,6 +1,6 @@
 {
   "name": "forkcast",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Self-hosted A/B testing & feature flags for JavaScript. Control vs treatments (C/T1/T2), sticky bucketing, targeting, one-click kill switch, dev overrides and a real-time dashboard.",
   "type": "module",
   "license": "MIT",
