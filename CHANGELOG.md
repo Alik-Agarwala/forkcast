@@ -4,6 +4,10 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+## [python-v0.1.0] - 2026-11-13
+
+First release of the Python SDK, published to PyPI as [`forkcast-sdk`](https://pypi.org/project/forkcast-sdk/). The npm package is unchanged.
+
 ### Added
 
 - **Python SDK** (`pip install forkcast-sdk`, `import forkcast`) for Python 3.10+, with no runtime dependencies. Local evaluation with bucketing, targeting and precedence identical to the JS SDK; background config polling or realtime SSE; batched exposures and `track()` events with retries; dev-only overrides; local config-as-code mode; fork-safe for gunicorn/uvicorn workers.

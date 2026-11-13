@@ -12,7 +12,7 @@ Ship code dark, flip it on with one click, roll out by percentage, target by cou
 [![CI](https://github.com/Alik-Agarwala/forkcast/actions/workflows/ci.yml/badge.svg)](https://github.com/Alik-Agarwala/forkcast/actions/workflows/ci.yml)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-🎬 [Watch the 2-minute launch video](https://github.com/Alik-Agarwala/forkcast/releases/tag/v0.1.0)
+🎬 [Watch the 2-minute launch video](https://github.com/Alik-Agarwala/forkcast/releases/tag/v0.1.0) (npm setup and dashboard tour) · 🐍 Python setup: [docs/python.md](docs/python.md)
 
 </div>
 

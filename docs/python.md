@@ -10,6 +10,8 @@ pip install "forkcast-sdk[flask]"       # + Flask helpers
 
 The package is called `forkcast-sdk` on PyPI and is imported as `forkcast`. It needs Python 3.10 or newer.
 
+New to Forkcast? The [2-minute launch video](https://github.com/Alik-Agarwala/forkcast/releases/tag/v0.1.0) shows the dashboard and the JavaScript setup. Everything in it (experiments, C/T1/T2, traffic, targeting, the kill switch, results) works the same from Python. This page covers the Python side.
+
 - [How it works](#how-it-works)
 - [Quick start](#quick-start)
 - [Creating the client](#creating-the-client)

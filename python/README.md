@@ -103,6 +103,8 @@ In Jinja templates you can write `{% if forkcast.is_enabled("dark-mode") %}`.
 
 ## More
 
+- 2-minute launch video (dashboard tour and the JavaScript setup; the concepts are identical in Python): [Forkcast v0.1.0 release](https://github.com/Alik-Agarwala/forkcast/releases/tag/v0.1.0)
+
 - Full Python guide, covering every option and method, Django, gunicorn, testing and local mode: [docs/python.md](https://github.com/Alik-Agarwala/forkcast/blob/main/docs/python.md)
 - Concepts (C/T1/T2, traffic, targeting, environments): [docs/concepts.md](https://github.com/Alik-Agarwala/forkcast/blob/main/docs/concepts.md)
 - Main project, JavaScript SDK and dashboard: [github.com/Alik-Agarwala/forkcast](https://github.com/Alik-Agarwala/forkcast)

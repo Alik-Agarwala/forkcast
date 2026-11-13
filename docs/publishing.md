@@ -56,7 +56,7 @@ npm pack --dry-run          # review the file list: dist/, README.md, LICENSE, C
    git push --follow-tags
    ```
 
-5. Create a GitHub release from the tag with the changelog entry.
+5. Create a GitHub release from the tag with the changelog entry. Title npm releases `Forkcast vX.Y.Z` and Python releases `Forkcast Python SDK vX.Y.Z`.
 
 ### Pre-releases
 
@@ -98,6 +98,8 @@ The name `forkcast` is taken on PyPI by an unrelated project, so the distributio
 
 ### One-time setup
 
+> Already done for this repository: `forkcast-sdk` exists on PyPI with `publish-python.yml` as its trusted publisher, and the `pypi` environment exists on GitHub. Releases only need the [release checklist](#release-checklist-1) below. Keep these steps for a fork or a new PyPI project.
+
 1. Create an account on <https://pypi.org> and enable two-factor authentication.
 2. **Recommended: trusted publishing (no tokens).** On PyPI go to *Your account → Publishing → Add a new pending publisher* and enter:
    - PyPI project name: `forkcast-sdk`
@@ -132,6 +134,8 @@ pytest && ruff check . && mypy
    pip install forkcast-sdk==0.1.0
    python -c "import forkcast; print(forkcast.__version__)"
    ```
+
+5. Create a GitHub release from the tag (`gh release create python-v0.1.0 --title "Forkcast Python SDK v0.1.0" --notes-file …`) with the changelog entry.
 
 ### Publishing by hand (without GitHub Actions)
 
